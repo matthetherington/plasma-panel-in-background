@@ -1,4 +1,9 @@
-# Panel in Background
+# 🪟 Panel in Background
+
+[![MIT License](https://img.shields.io/github/license/matthetherington/plasma-panel-in-background?style=for-the-badge&labelColor=1E3A5F&color=3DAEE9)](LICENSE)
+[![Latest release](https://img.shields.io/github/v/release/matthetherington/plasma-panel-in-background?style=for-the-badge&labelColor=1E3A5F&color=3DAEE9)](https://github.com/matthetherington/plasma-panel-in-background/releases/latest)
+[![Plasma 6.8.2 tested](https://img.shields.io/badge/Plasma-6.8.2%20tested-3DAEE9?style=for-the-badge&logo=kde&logoColor=white&labelColor=1E3A5F)](docs/COMPATIBILITY.md)
+[![Wayland](https://img.shields.io/badge/Session-Wayland-3DAEE9?style=for-the-badge&labelColor=1E3A5F)](docs/COMPATIBILITY.md)
 
 Keep KDE Plasma panels **above the wallpaper but behind application windows**.
 Windows cover only the parts they overlap; the rest of the panel stays visible
