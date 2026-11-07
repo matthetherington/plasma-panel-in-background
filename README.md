@@ -7,6 +7,10 @@ and usable. Panels don't hide, reserve screen space, or rise at the screen edge.
 Add one small QML widget to each panel you want to control. No native plugin,
 root access or Plasma rebuild is needed.
 
+![A terminal window partially covering a monitoring panel, with the uncovered widgets still visible.](docs/images/panel-in-background.png)
+
+*Windows cover only the parts of the panel they overlap.*
+
 ## Requirements
 
 - KDE Plasma on **Wayland**.

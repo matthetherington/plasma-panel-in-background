@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_FILES = (
     "LICENSE", "README.md", "CHANGELOG.md",
     "docs/COMPATIBILITY.md", "docs/TROUBLESHOOTING.md", "docs/DEVELOPMENT.md",
+    "docs/images/panel-in-background.png",
 )
 
 
