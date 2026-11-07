@@ -11,6 +11,23 @@ root access or Plasma rebuild is needed.
 
 *Windows cover only the parts of the panel they overlap.*
 
+## Motivation
+
+Plasma 5 had a similar **Windows Can Cover** mode. It was removed in Plasma 6
+and replaced with **Dodge Windows**; KDE's developers have
+[said there are no plans to bring the old mode back](https://bugs.kde.org/show_bug.cgi?id=486701#c1).
+
+Plasma 6's built-in visibility modes are:
+
+- **Always visible:** stays above windows and reserves screen space.
+- **Auto hide:** hides until you move the pointer to the screen edge.
+- **Dodge windows:** hides the whole panel when a window overlaps it.
+- **Windows go below:** stays above windows without reserving screen space.
+
+None keeps the panel permanently behind application windows while leaving its
+uncovered parts visible. This widget adds that behaviour. Unlike the old
+Windows Can Cover mode, it doesn't raise the panel when you touch the screen edge.
+
 ## Requirements
 
 - KDE Plasma on **Wayland**.
