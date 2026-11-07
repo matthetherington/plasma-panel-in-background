@@ -1,0 +1,29 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local Python environments
+.venv/
+venv/
+env/
+
+# Generated packages and build outputs
+/dist/
+/build/
+*.egg-info/
+
+# Test coverage and diagnostic output
+.coverage
+.coverage.*
+/htmlcov/
+/coverage.xml
+*.log
+
+# Local environment settings (keep shareable examples)
+.env
+.env.*
+!.env.example
+!.env.sample

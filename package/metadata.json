@@ -1,0 +1,14 @@
+{
+    "KPlugin": {
+        "Id": "io.github.matthetherington.plasma.panelinbackground",
+        "Name": "Panel in Background",
+        "Description": "Keep this panel behind application windows on Plasma Wayland",
+        "Icon": "view-bottom-new",
+        "Version": "0.3.0",
+        "License": "MIT",
+        "Authors": [{"Name": "Panel in Background contributors"}],
+        "Category": "Utilities"
+    },
+    "KPackageStructure": "Plasma/Applet",
+    "X-Plasma-API-Minimum-Version": "6.0"
+}
