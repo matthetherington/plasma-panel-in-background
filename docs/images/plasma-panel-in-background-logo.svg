@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: MIT -->
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+  <title id="title">Plasma Panel in Background</title>
+  <desc id="description">A pale application window overlapping a blue side panel on a dark rounded square.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#183c60"/>
+      <stop offset="1" stop-color="#0d1c31"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0.8" y2="1">
+      <stop stop-color="#69d5ff"/>
+      <stop offset="1" stop-color="#2788e7"/>
+    </linearGradient>
+    <linearGradient id="window" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#deedfb"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="170%" height="180%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#030b16" flood-opacity="0.35"/>
+    </filter>
+    <clipPath id="window-clip">
+      <rect x="64" y="148" width="316" height="236" rx="24"/>
+    </clipPath>
+  </defs>
+
+  <rect width="512" height="512" rx="108" fill="url(#background)"/>
+  <rect x="1" y="1" width="510" height="510" rx="107" fill="none" stroke="#7acbff" stroke-opacity="0.15" stroke-width="2"/>
+
+  <!-- The side panel is drawn first, so only its uncovered areas remain visible. -->
+  <rect x="300" y="68" width="140" height="376" rx="26" fill="url(#panel)" filter="url(#shadow)"/>
+  <g stroke="#ffffff" stroke-linecap="round" fill="none">
+    <path d="M326 104h87" stroke-width="12" stroke-opacity="0.95"/>
+    <path d="M342 128h55" stroke-width="6" stroke-opacity="0.55"/>
+    <path d="M320 191h100" stroke-width="2" stroke-opacity="0.25"/>
+    <path d="M320 283h100" stroke-width="2" stroke-opacity="0.25"/>
+    <path d="M320 247h18l12-22 17 35 18-45 15 24h20" stroke-width="6" stroke-linejoin="round" stroke-opacity="0.9"/>
+  </g>
+  <g fill="#ffffff">
+    <rect x="394" y="312" width="9" height="43" rx="4" fill-opacity="0.55"/>
+    <rect x="411" y="298" width="9" height="57" rx="4" fill-opacity="0.85"/>
+    <rect x="322" y="405" width="24" height="16" rx="5" fill-opacity="0.7"/>
+    <rect x="357" y="405" width="24" height="16" rx="5" fill-opacity="0.7"/>
+    <rect x="392" y="405" width="24" height="16" rx="5" fill-opacity="0.7"/>
+  </g>
+
+  <!-- The application stays in front without hiding the whole panel. -->
+  <rect x="64" y="148" width="316" height="236" rx="24" fill="url(#window)" filter="url(#shadow)"/>
+  <g clip-path="url(#window-clip)">
+    <rect x="64" y="148" width="316" height="55" fill="#254d73"/>
+    <path d="M88 203h268" stroke="#ffffff" stroke-opacity="0.1" stroke-width="2"/>
+  </g>
+  <g fill="#89d6ff">
+    <circle cx="91" cy="176" r="6"/>
+    <circle cx="112" cy="176" r="6" fill-opacity="0.6"/>
+    <circle cx="133" cy="176" r="6" fill-opacity="0.35"/>
+  </g>
+  <path d="M331 176h22" stroke="#b9ddfa" stroke-width="4" stroke-linecap="round"/>
+  <rect x="91" y="231" width="62" height="62" rx="13" fill="#3daee9"/>
+  <g stroke="#254d73" stroke-linecap="round" fill="none">
+    <path d="M175 244h112" stroke-width="12" stroke-opacity="0.85"/>
+    <path d="M175 271h158" stroke-width="9" stroke-opacity="0.25"/>
+    <path d="M96 323h237M96 347h163" stroke-width="9" stroke-opacity="0.18"/>
+  </g>
+</svg>

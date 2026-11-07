@@ -63,6 +63,15 @@ class PackagingTests(unittest.TestCase):
             self.assertEqual(archive.read(path), (ROOT / path).read_bytes())
             self.assertTrue(archive.read(path).startswith(b"\x89PNG\r\n\x1a\n"))
 
+    def test_readme_logo_is_bundled(self):
+        path = "docs/images/plasma-panel-in-background-logo.png"
+        with zipfile.ZipFile(self.archive) as archive:
+            readme = archive.read("README.md").decode()
+            self.assertIn(path, readme)
+            self.assertLess(readme.index(path), readme.index("# Panel in Background"))
+            self.assertEqual(archive.read(path), (ROOT / path).read_bytes())
+            self.assertTrue(archive.read(path).startswith(b"\x89PNG\r\n\x1a\n"))
+
     def test_reproducible(self):
         another = builder.build(Path(self.directory.name) / "second")
         self.assertEqual(self.archive.read_bytes(), another.read_bytes())

@@ -1,4 +1,6 @@
-# 🪟 Panel in Background
+<img src="docs/images/plasma-panel-in-background-logo.png" alt="Panel in Background logo" width="128" height="128">
+
+# Panel in Background
 
 [![MIT License](https://img.shields.io/github/license/matthetherington/plasma-panel-in-background?style=for-the-badge&labelColor=1E3A5F&color=3DAEE9)](LICENSE)
 [![Latest release](https://img.shields.io/github/v/release/matthetherington/plasma-panel-in-background?style=for-the-badge&labelColor=1E3A5F&color=3DAEE9)](https://github.com/matthetherington/plasma-panel-in-background/releases/latest)
