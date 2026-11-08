@@ -66,7 +66,9 @@ jobs:
           name: plasmoid
           path: dist
       - name: Build Fedora test environment
-        run: docker build --tag panel-in-background-ci --file tests/ci.Dockerfile tests
+        run: |
+          docker build --tag panel-in-background-ci --file tests/ci.Dockerfile \
+            --build-arg CI_UID="$(id -u)" --build-arg CI_GID="$(id -g)" tests
       - name: Enable software-rendering buffers on the disposable runner
         run: |
           # Hosted Azure images can omit the running kernel's extra modules.
@@ -90,7 +92,6 @@ jobs:
           mkdir -p "$RUNNER_TEMP/plasma-logs"
           chmod 1777 "$RUNNER_TEMP/plasma-logs"
           docker run --rm --network none --cap-drop ALL \
-            --user "$(id -u):$(id -g)" --env HOME=/tmp \
             --device /dev/udmabuf \
             --volume "$GITHUB_WORKSPACE:/workspace:ro" \
             --volume "$RUNNER_TEMP/plasma-logs:/tmp/panel-in-background-tests" \

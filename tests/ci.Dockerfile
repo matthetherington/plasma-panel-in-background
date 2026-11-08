@@ -9,8 +9,14 @@ RUN dnf install -y --setopt=install_weak_deps=False \
         qt6-qtdeclarative-devel qt6-qttools qt6-qtwayland \
         mesa-dri-drivers breeze-icon-theme google-noto-sans-fonts \
         shadow-utils \
-    && dnf clean all \
-    && useradd --uid 1000 --create-home ci \
+    && dnf clean all
+
+# A numeric --user override alone is insufficient: D-Bus needs a passwd entry.
+# Match the host runner so private diagnostic directories are uploadable too.
+ARG CI_UID=1000
+ARG CI_GID=1000
+RUN groupadd --gid "${CI_GID}" ci \
+    && useradd --uid "${CI_UID}" --gid ci --create-home ci \
     && mkdir -p /tmp/panel-in-background-tests \
     && chmod 1777 /tmp/panel-in-background-tests
 

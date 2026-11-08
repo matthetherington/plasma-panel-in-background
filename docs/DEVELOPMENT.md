@@ -123,9 +123,11 @@ version-tag pushes (`v*`), and manual runs from the Actions tab.
    recent KWin versions require this even without a physical GPU. No host desktop
    or GPU is needed. Diagnostics are saved as
    **plasma-logs**, including on failure when logs are available.
-   The container runs as the runner's UID/GID so its private test directories
-   remain readable by the artifact uploader; `HOME=/tmp` avoids relying on the
-   image user's home-directory ownership.
+   The image creates a real `ci` account with the runner's UID/GID, passed through
+   the `CI_UID` and `CI_GID` build arguments. This lets D-Bus resolve the user,
+   provides a writable home directory, and keeps private test directories readable by
+   the artifact uploader. Do not replace this with a numeric `docker run --user`
+   override: a UID without a matching passwd entry breaks session services.
 3. For a pushed version tag only, publish a GitHub Release after both jobs pass,
    attaching the exact tested package and checksum. Notes come from the matching
    section in `CHANGELOG.md`. Tags containing `-` produce prereleases.
