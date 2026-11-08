@@ -111,6 +111,9 @@ kpackagetool6 --type Plasma/Applet --install ./plasma-panel-in-background-0.4.0.
 Run this as your desktop user, without `sudo`. To build from source, see
 [development instructions](docs/DEVELOPMENT.md).
 
+Installing the package does not automatically add or enable the widget. Follow
+these steps for each panel you want to control:
+
 1. Right-click your panel and enter **Edit Mode**.
 2. Choose **Add Widgets**, search for **Panel in Background**, and add it to that panel.
 3. Right-click its small **P** control and choose **Enable behind windows**.
