@@ -3,6 +3,7 @@
 ## 0.4.1
 
 - Show an animated demonstration in the README and refresh the static screenshot.
+- Keep the animation under 5 MB using a reduced resolution and 8 fps playback.
 - Bundle both images and verify them in packaging tests.
 - Clarify that installation does not automatically add or enable the widget.
 - Point development documentation to the maintained compatibility testing gaps.

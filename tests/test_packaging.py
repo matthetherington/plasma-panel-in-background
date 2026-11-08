@@ -70,6 +70,7 @@ class PackagingTests(unittest.TestCase):
             self.assertIn(path, archive.read("README.md").decode())
             self.assertEqual(archive.read(path), (ROOT / path).read_bytes())
             self.assertTrue(archive.read(path).startswith((b"GIF87a", b"GIF89a")))
+            self.assertLess(len(archive.read(path)), 5_000_000)
 
     def test_readme_logo_is_bundled(self):
         path = "docs/images/plasma-panel-in-background-logo.png"
