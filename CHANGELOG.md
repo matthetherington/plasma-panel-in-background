@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.1
+
+- Show an animated demonstration in the README and refresh the static screenshot.
+- Bundle both images and verify them in packaging tests.
+- Clarify that installation does not automatically add or enable the widget.
+- Point development documentation to the maintained compatibility testing gaps.
+- No widget behaviour changes.
+
 ## 0.4.0
 
 - Use the window cover-switch icon suggested in issue #1.

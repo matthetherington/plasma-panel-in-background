@@ -13,6 +13,7 @@ PUBLIC_FILES = (
     "LICENSE", "README.md", "CHANGELOG.md",
     "docs/COMPATIBILITY.md", "docs/TROUBLESHOOTING.md", "docs/DEVELOPMENT.md",
     "docs/images/panel-in-background.png",
+    "docs/images/panel-in-background.gif",
     "docs/images/plasma-panel-in-background-logo.png",
 )
 

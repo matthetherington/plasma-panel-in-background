@@ -15,7 +15,7 @@ Add one small QML widget to each panel you want to control. No native plugin,
 root access or Plasma rebuild is needed to install the widget itself. Installing
 missing system dependencies may require administrator access.
 
-![A terminal window partially covering a monitoring panel, with the uncovered widgets still visible.](docs/images/panel-in-background.png)
+![Animated demonstration of a terminal window covering a monitoring panel while the uncovered widgets stay visible.](docs/images/panel-in-background.gif)
 
 *Windows cover only the parts of the panel they overlap.*
 
@@ -105,7 +105,7 @@ Download the `.plasmoid` file from the
 then install it, adjusting the path and version as needed:
 
 ```sh
-kpackagetool6 --type Plasma/Applet --install ./plasma-panel-in-background-0.4.0.plasmoid
+kpackagetool6 --type Plasma/Applet --install ./plasma-panel-in-background-0.4.1.plasmoid
 ```
 
 Run this as your desktop user, without `sudo`. To build from source, see
@@ -136,7 +136,7 @@ existing panel layout.
 ## Upgrade
 
 ```sh
-kpackagetool6 --type Plasma/Applet --upgrade ./plasma-panel-in-background-0.4.0.plasmoid
+kpackagetool6 --type Plasma/Applet --upgrade ./plasma-panel-in-background-0.4.1.plasmoid
 ```
 
 Use the new version's filename, then log out and back in to load the updated widget.

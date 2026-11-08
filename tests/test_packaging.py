@@ -31,7 +31,7 @@ class PackagingTests(unittest.TestCase):
             for info in archive.infolist():
                 self.assertEqual(info.date_time, (1980, 1, 1, 0, 0, 0))
                 self.assertEqual(info.external_attr >> 16, 0o100644)
-                if not info.filename.endswith(".png"):
+                if not info.filename.endswith((".png", ".gif")):
                     self.assertNotIn("/home/", archive.read(info).decode())
             metadata = json.loads(archive.read("metadata.json"))
             self.assertEqual(metadata["KPackageStructure"], "Plasma/Applet")
@@ -58,12 +58,18 @@ class PackagingTests(unittest.TestCase):
         self.assertEqual(self.archive.with_suffix(".plasmoid.sha256").read_text(),
                          f"{digest}  {self.archive.name}\n")
 
-    def test_readme_screenshot_is_bundled(self):
+    def test_screenshot_is_bundled(self):
         path = "docs/images/panel-in-background.png"
+        with zipfile.ZipFile(self.archive) as archive:
+            self.assertEqual(archive.read(path), (ROOT / path).read_bytes())
+            self.assertTrue(archive.read(path).startswith(b"\x89PNG\r\n\x1a\n"))
+
+    def test_readme_animation_is_bundled(self):
+        path = "docs/images/panel-in-background.gif"
         with zipfile.ZipFile(self.archive) as archive:
             self.assertIn(path, archive.read("README.md").decode())
             self.assertEqual(archive.read(path), (ROOT / path).read_bytes())
-            self.assertTrue(archive.read(path).startswith(b"\x89PNG\r\n\x1a\n"))
+            self.assertTrue(archive.read(path).startswith((b"GIF87a", b"GIF89a")))
 
     def test_readme_logo_is_bundled(self):
         path = "docs/images/plasma-panel-in-background-logo.png"

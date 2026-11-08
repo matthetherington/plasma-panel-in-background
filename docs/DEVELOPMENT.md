@@ -3,6 +3,17 @@
 Run these commands from a source checkout. The `.plasmoid` archive doesn't include
 build tools or tests.
 
+## Current follow-up work
+
+The QML widget is released; the prototype's input blocker and initial live-panel
+trial are no longer pending. The maintained list of testing gaps is in
+[COMPATIBILITY.md](COMPATIBILITY.md#still-to-test), including broader
+distribution/version coverage and establishing a minimum supported Plasma version.
+
+Local planning, investigation and trial notes are historical records, not an
+active backlog. Native-extension, CMake/RPM and GPL packaging proposals in those
+notes were superseded by the MIT-licensed QML-only package.
+
 ## Build
 
 Only Python 3 is needed:
@@ -21,7 +32,7 @@ the same source and Python/zlib toolchain.
 Verify the checksum from `dist/`:
 
 ```sh
-sha256sum --check plasma-panel-in-background-0.4.0.plasmoid.sha256
+sha256sum --check plasma-panel-in-background-0.4.1.plasmoid.sha256
 ```
 
 ## Packaging tests
@@ -47,7 +58,7 @@ python3 tests/run-nested.py --input
 To test the built archive instead of the source widget:
 
 ```sh
-python3 tests/run-nested.py --input --package dist/plasma-panel-in-background-0.4.0.plasmoid
+python3 tests/run-nested.py --input --package dist/plasma-panel-in-background-0.4.1.plasmoid
 ```
 
 Tests start a separate Plasma session with a private D-Bus bus and disposable XDG
