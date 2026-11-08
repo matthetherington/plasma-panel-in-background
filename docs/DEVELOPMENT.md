@@ -32,7 +32,7 @@ the same source and Python/zlib toolchain.
 Verify the checksum from `dist/`:
 
 ```sh
-sha256sum --check plasma-panel-in-background-0.4.3.plasmoid.sha256
+sha256sum --check plasma-panel-in-background-0.4.2.plasmoid.sha256
 ```
 
 ## Packaging tests
@@ -61,8 +61,15 @@ To test the built archive instead of the source widget:
 python3 tests/run-nested.py --input --package dist/plasma-panel-in-background-0.4.2.plasmoid
 ```
 
+Alternatively, verify the checksum and test the package matching the current
+metadata automatically, ignoring older packages in `dist/`:
+
+```sh
+python3 tests/run-ci.py
+```
+
 Tests start a separate Plasma session with a private D-Bus bus and disposable XDG
-directories under `/tmp/opencode` (create that directory first if needed). Your
+directories under `/tmp/panel-in-background-tests` (created automatically). Your
 desktop settings aren't changed, but this is **not a security sandbox**: test
 processes still run as your user. Logs are kept in the printed directory.
 
@@ -78,6 +85,26 @@ python3 tests/run-nested.py --visible --diagnose
 
 This is a short diagnostic, not the full test suite. Screenshots capture only the
 nested desktop. Set `PIB_WIRE=1` or `PIB_QT_INPUT=1` for detailed input logs.
+
+### Inspect panels on the live desktop
+
+`scripts/observe-panels.py` is an optional manual diagnostic, not part of CI.
+It prints panel layer, hidden state and geometry by loading a temporary read-only
+KWin script, then unloading it. It does not change panel settings or stacking.
+Run it as your desktop user from a Plasma Wayland session:
+
+```sh
+python3 scripts/observe-panels.py
+```
+
+It needs Python's `dbus` and `gi` modules (PyGObject/GLib), which are not needed to
+build or install the widget. On Fedora, install them with:
+
+```sh
+sudo dnf install python3-dbus python3-gobject
+```
+
+On Debian/Ubuntu, the corresponding packages are `python3-dbus` and `python3-gi`.
 
 ## GitHub Actions
 

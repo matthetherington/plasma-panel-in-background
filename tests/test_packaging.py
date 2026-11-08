@@ -43,6 +43,10 @@ class PackagingTests(unittest.TestCase):
                              f'plasma-panel-in-background-{metadata["KPlugin"]["Version"]}.plasmoid')
             self.assertEqual(metadata["KPlugin"]["License"], "MIT")
             self.assertEqual(metadata["KPlugin"]["Authors"], [{"Name": "Matt Hetherington"}])
+            self.assertEqual(metadata["KPlugin"]["Website"],
+                             "https://github.com/matthetherington/plasma-panel-in-background")
+            self.assertEqual(metadata["KPlugin"]["BugReportUrl"],
+                             "https://github.com/matthetherington/plasma-panel-in-background/issues")
             ET.fromstring(archive.read("contents/config/main.xml"))
 
     def test_licence_is_bundled_and_consistent(self):

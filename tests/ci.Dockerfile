@@ -11,8 +11,8 @@ RUN dnf install -y --setopt=install_weak_deps=False \
         shadow-utils \
     && dnf clean all \
     && useradd --uid 1000 --create-home ci \
-    && mkdir -p /tmp/opencode \
-    && chmod 1777 /tmp/opencode
+    && mkdir -p /tmp/panel-in-background-tests \
+    && chmod 1777 /tmp/panel-in-background-tests
 
 # KWin's scheduling capability prevents exec when all container capabilities are
 # dropped. The virtual/software-rendered test session does not need it.
@@ -24,4 +24,4 @@ ENV KWIN_COMPOSE=O2 QT_QUICK_BACKEND=software
 ENV XDG_CURRENT_DESKTOP=KDE XDG_SESSION_DESKTOP=KDE XDG_SESSION_TYPE=wayland
 ENV KDE_FULL_SESSION=true KDE_SESSION_VERSION=6
 WORKDIR /workspace
-CMD ["bash", "-euc", "cd dist && sha256sum --check *.plasmoid.sha256 && cd .. && python3 tests/run-nested.py --input --package dist/*.plasmoid"]
+CMD ["python3", "tests/run-ci.py"]

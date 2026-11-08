@@ -29,7 +29,9 @@ class Observer(dbus.service.Object):
 observer = Observer(bus, "/Observer")
 scripting = dbus.Interface(bus.get_object("org.kde.KWin", "/Scripting"), "org.kde.kwin.Scripting")
 plugin = "panel-in-background-observe-" + str(os.getpid())
-with tempfile.TemporaryDirectory(prefix="panel-in-background-observer-", dir="/tmp/opencode") as temporary:
+test_directory = Path("/tmp/panel-in-background-tests")
+test_directory.mkdir(mode=0o700, exist_ok=True)
+with tempfile.TemporaryDirectory(prefix="panel-in-background-observer-", dir=test_directory) as temporary:
     source = Path(temporary) / "observe.js"
     source.write_text('var result=[]; for (var w of workspace.windowList()) { '
         'if (w.dock && w.resourceClass === "plasmashell") { '

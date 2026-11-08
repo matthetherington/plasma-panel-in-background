@@ -7,6 +7,8 @@
         "Version": "0.4.2",
         "License": "MIT",
         "Authors": [{"Name": "Matt Hetherington"}],
+        "Website": "https://github.com/matthetherington/plasma-panel-in-background",
+        "BugReportUrl": "https://github.com/matthetherington/plasma-panel-in-background/issues",
         "Category": "Utilities"
     },
     "KPackageStructure": "Plasma/Applet",

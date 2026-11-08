@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 {
     const char *runtime = getenv("XDG_RUNTIME_DIR");
     const char *socket = getenv("WAYLAND_DISPLAY");
-    const char prefix[] = "/tmp/opencode/panel-in-background-nested-";
+    const char prefix[] = "/tmp/panel-in-background-tests/session-";
     if (!runtime || strncmp(runtime, prefix, sizeof(prefix) - 1)
             || !socket || strcmp(socket, "panel-in-background-test") || argc < 4) {
         fprintf(stderr, "Refusing input outside disposable Panel in Background session\n");

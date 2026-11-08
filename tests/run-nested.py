@@ -15,7 +15,10 @@ parser.add_argument("--visible", action="store_true", help="Show the disposable 
 parser.add_argument("--diagnose", action="store_true", help="Run short rendering/input diagnostics instead of full suite")
 parser.add_argument("--package", type=Path, help="Install/test a built .plasmoid instead of symlinking source")
 args = parser.parse_args()
-root = Path(tempfile.mkdtemp(prefix="panel-in-background-nested-", dir="/tmp/opencode"))
+test_directory = Path("/tmp/panel-in-background-tests")
+test_directory.mkdir(mode=0o700, exist_ok=True)
+# Keep runtime socket paths short enough for Unix-domain socket limits.
+root = Path(tempfile.mkdtemp(prefix="session-", dir=test_directory))
 for name in ("config", "data", "state", "cache", "runtime"):
     (root / name).mkdir(mode=0o700)
 widgets = root / "data/plasma/plasmoids"

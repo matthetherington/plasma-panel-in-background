@@ -10,7 +10,8 @@ import time
 
 root = Path(os.environ["PIB_TEST_ROOT"])
 project = Path(__file__).resolve().parents[1]
-assert str(root).startswith("/tmp/opencode/")
+assert root.parent == Path("/tmp/panel-in-background-tests")
+assert root.name.startswith("session-")
 assert os.environ["XDG_CONFIG_HOME"] == str(root / "config")
 
 
