@@ -42,12 +42,14 @@ class PackagingTests(unittest.TestCase):
             self.assertEqual(self.archive.name,
                              f'plasma-panel-in-background-{metadata["KPlugin"]["Version"]}.plasmoid')
             self.assertEqual(metadata["KPlugin"]["License"], "MIT")
+            self.assertEqual(metadata["KPlugin"]["Authors"], [{"Name": "Matt Hetherington"}])
             ET.fromstring(archive.read("contents/config/main.xml"))
 
     def test_licence_is_bundled_and_consistent(self):
         with zipfile.ZipFile(self.archive) as archive:
             self.assertEqual(archive.read("LICENSE"), (ROOT / "LICENSE").read_bytes())
             self.assertIn(b"MIT License", archive.read("LICENSE"))
+            self.assertIn(b"Copyright (c) 2026 Matt Hetherington", archive.read("LICENSE"))
             for entry in archive.namelist():
                 if entry.endswith((".qml", ".js", ".xml")):
                     self.assertIn(b"SPDX-License-Identifier: MIT", archive.read(entry))

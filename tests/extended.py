@@ -52,12 +52,16 @@ def run_extended(root, script, snapshot, restart_plasma):
     assert str(saved["saved"]) == "1", saved
     restart_plasma(hard=True)
     panel("after-hard-restart", 1)
+    # Keep the surface mapped while checking restoration. A hidden auto-hide
+    # surface can retain its old compositor layer until its next buffer commit.
+    edit_mode(True)
     config(False)
     panel("restart-disabled", 3)
     restored = json.loads(script('for (var p of panels()) { '
         'print(JSON.stringify({hiding:p.hiding})); }'))
     assert restored["hiding"] == "autohide", restored
     assert "PIB restored mode=1 layer=2 zone=-1" in (root / "plasma.log").read_text()
+    edit_mode(False)
     print("PASS: restart/crash persistence and original auto-hide restoration", flush=True)
 
     config(True)
@@ -79,6 +83,7 @@ def run_extended(root, script, snapshot, restart_plasma):
     dock = panel("bottom-edge", 1)
     print("PASS: moving panel between bottom and left edges", flush=True)
     # Move the existing active controller to a different panel/containment.
+    edit_mode(True)
     script('var old=panels()[0]; var destination=new Panel; '
            'destination.location="left"; destination.hiding="none"; '
            'destination.addWidget(old.widgets("io.github.matthetherington.plasma.panelinbackground")[0]);')
@@ -92,6 +97,7 @@ def run_extended(root, script, snapshot, restart_plasma):
         'for (var w of p.widgets("io.github.matthetherington.plasma.panelinbackground")) { '
         'print(JSON.stringify({hiding:p.hiding})); } }'))
     assert saved["hiding"] == "none", saved
+    edit_mode(False)
     print("PASS: controller migration restores old panel and adopts new panel state", flush=True)
     if not os.environ.get("PIB_TEST_INPUT"):
         print("SKIP: input/popups; enable with --input", flush=True)

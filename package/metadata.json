@@ -6,7 +6,7 @@
         "Icon": "preferences-system-windows-effect-coverswitch",
         "Version": "0.4.1",
         "License": "MIT",
-        "Authors": [{"Name": "Panel in Background contributors"}],
+        "Authors": [{"Name": "Matt Hetherington"}],
         "Category": "Utilities"
     },
     "KPackageStructure": "Plasma/Applet",

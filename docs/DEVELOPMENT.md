@@ -79,10 +79,67 @@ python3 tests/run-nested.py --visible --diagnose
 This is a short diagnostic, not the full test suite. Screenshots capture only the
 nested desktop. Set `PIB_WIRE=1` or `PIB_QT_INPUT=1` for detailed input logs.
 
-## Before publishing
+## GitHub Actions
 
-1. Update `package/metadata.json` and `CHANGELOG.md`.
-2. Run the packaging tests and build the archive.
-3. Run integration tests with `--input --package` to check installation and behaviour.
-4. Check the contents and checksum, then publish the archive and matching source.
-5. Update the tested configurations in [COMPATIBILITY.md](COMPATIBILITY.md).
+The workflow in `.github/workflows/ci.yml` runs on pull requests, pushes to `main`,
+version-tag pushes (`v*`), and manual runs from the Actions tab.
+
+1. Run packaging and release-validation unit tests, build the `.plasmoid`, verify
+   its SHA-256 checksum and save both files as the **plasmoid** workflow artifact.
+2. Download that same artifact and run the full isolated Plasma lifecycle/input
+   suite in a Fedora 44 container on an x86_64 GitHub-hosted runner. It uses
+   software rendering, a virtual display, a private D-Bus session and disposable
+   configuration. The job loads the runner's `udmabuf` kernel module and exposes
+   only `/dev/udmabuf` to the unprivileged container for software-rendering buffers;
+   recent KWin versions require this even without a physical GPU. No host desktop
+   or GPU is needed. Diagnostics are saved as
+   **plasma-logs**, including on failure when logs are available.
+3. For a pushed version tag only, publish a GitHub Release after both jobs pass,
+   attaching the exact tested package and checksum. Notes come from the matching
+   section in `CHANGELOG.md`. Tags containing `-` produce prereleases.
+
+The tag must exactly match `v` plus `KPlugin.Version` in `package/metadata.json`,
+and its changelog section must exist and contain release notes. A mismatch fails
+the workflow rather than publishing incorrectly named assets. Release publication
+uses GitHub's automatic `GITHUB_TOKEN`; no personal token or KDE Store credentials
+are needed. Only the release job has repository write permission. Fork pull
+requests run tests without publishing or receiving release credentials.
+
+Enable Actions in the repository settings if it is disabled, and ensure repository
+or organisation policies allow the release job's `contents: write` permission.
+No self-hosted runner is required. The workflow must be committed and pushed before
+it can run; existing tags do not automatically trigger it retroactively.
+
+The container pins the Fedora release, not individual package versions, so its
+Plasma/Qt packages track that release's updates. Passing this job is not a promise
+of compatibility with every distro or Plasma version. Keep manually verified
+configurations and remaining gaps in [COMPATIBILITY.md](COMPATIBILITY.md).
+
+### Publish a new version
+
+1. Update `package/metadata.json`, add a matching `## <version>` section to
+   `CHANGELOG.md`, and update versioned examples in this file and `README.md`.
+2. Commit the changes and push `main`. Check that CI passes.
+3. Create and push the matching annotated tag, for example for a future `0.4.2`:
+
+   ```sh
+   git tag -a v0.4.2 -m "Release 0.4.2"
+   git push origin v0.4.2
+   ```
+
+4. Wait for the tag's workflow to pass and publish the GitHub Release. Download
+   its `.plasmoid` and `.sha256` assets and verify the checksum before upload.
+   Do not upload the outer ZIP downloaded from the Actions artifacts page as a
+   widget; extract the `.plasmoid` first if using that download instead.
+5. Upload the `.plasmoid` to the **KDE Store** manually and update the listing's
+   version, release notes and screenshots as needed. Store publishing is not
+   automated by this workflow; it does not require or store your Store password.
+
+Do not manually create the GitHub Release before the tag workflow: publication
+deliberately fails if a release with that tag already exists, rather than silently
+overwriting published files. Rerun failed jobs after resolving a transient failure;
+for content changes, prefer a new version/tag. Replacing an already-published tag
+and its release assets requires a deliberate manual operation.
+
+For local-only builds, continue using the build and test commands above. CI
+artifacts live on GitHub, not in your local `dist/` directory.

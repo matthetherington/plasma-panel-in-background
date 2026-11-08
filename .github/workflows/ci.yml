@@ -1,0 +1,127 @@
+name: Test, build and release
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+jobs:
+  package:
+    name: Packaging tests and build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Run unit tests
+        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Validate release tag and extract changelog
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: python3 scripts/prepare_release.py --tag "$RELEASE_TAG" --output release-notes.md
+      - name: Build package
+        run: python3 scripts/build_package.py
+      - name: Verify checksum
+        working-directory: dist
+        run: sha256sum --check *.plasmoid.sha256
+      - name: Upload installable package and checksum
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: plasmoid
+          path: |
+            dist/*.plasmoid
+            dist/*.plasmoid.sha256
+          if-no-files-found: error
+          retention-days: 30
+      - name: Upload release notes
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-notes
+          path: release-notes.md
+          if-no-files-found: error
+
+  plasma:
+    name: Isolated Plasma lifecycle and input tests
+    needs: package
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: plasmoid
+          path: dist
+      - name: Build Fedora test environment
+        run: docker build --tag panel-in-background-ci --file tests/ci.Dockerfile tests
+      - name: Enable software-rendering buffers on the disposable runner
+        run: |
+          sudo modprobe udmabuf
+          sudo chmod a+rw /dev/udmabuf
+      - name: Test the packaged widget without a host desktop
+        run: |
+          mkdir -p "$RUNNER_TEMP/plasma-logs"
+          chmod 1777 "$RUNNER_TEMP/plasma-logs"
+          docker run --rm --network none --cap-drop ALL \
+            --device /dev/udmabuf \
+            --volume "$GITHUB_WORKSPACE:/workspace:ro" \
+            --volume "$RUNNER_TEMP/plasma-logs:/tmp/opencode" \
+            panel-in-background-ci
+      - name: Upload isolated-session diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: plasma-logs
+          path: |
+            ${{ runner.temp }}/plasma-logs/**/*.log
+            ${{ runner.temp }}/plasma-logs/**/snapshot-*.js
+          if-no-files-found: warn
+          retention-days: 14
+
+  release:
+    name: Publish GitHub Release
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    needs: [package, plasma]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: plasmoid
+          path: dist
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: release-notes
+          path: notes
+      - name: Verify downloaded release assets
+        working-directory: dist
+        run: sha256sum --check *.plasmoid.sha256
+      - name: Create release with the tested assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          options=()
+          if [[ "$RELEASE_TAG" == *-* ]]; then
+            options+=(--prerelease)
+          fi
+          gh release create "$RELEASE_TAG" --verify-tag \
+            --title "Panel in Background ${RELEASE_TAG#v}" \
+            --notes-file notes/release-notes.md "${options[@]}" \
+            dist/*.plasmoid dist/*.plasmoid.sha256
