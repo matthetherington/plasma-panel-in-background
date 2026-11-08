@@ -37,9 +37,6 @@ qdbus-qt6 org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript \
 Run as your desktop user, not root. Your distribution may call this command
 `qdbus6` or place it in Qt's `bin` directory.
 
-For an installation from before the rename, substitute `org.kde.zzero` as the
-widget ID. See the [migration instructions](../README.md#migrating-from-020-or-earlier).
-
 If the widget itself can't load, automatic restoration won't work. Remove the
 broken widget in Edit Mode and choose your preferred visibility mode in Plasma's
 panel settings. Log out and back in to recreate the panel on its normal layer.

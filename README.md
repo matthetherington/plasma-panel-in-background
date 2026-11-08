@@ -12,7 +12,8 @@ Windows cover only the parts they overlap; the rest of the panel stays visible
 and usable. Panels don't hide, reserve screen space, or rise at the screen edge.
 
 Add one small QML widget to each panel you want to control. No native plugin,
-root access or Plasma rebuild is needed.
+root access or Plasma rebuild is needed to install the widget itself. Installing
+missing system dependencies may require administrator access.
 
 ![A terminal window partially covering a monitoring panel, with the uncovered widgets still visible.](docs/images/panel-in-background.png)
 
@@ -37,7 +38,7 @@ Windows Can Cover mode, it doesn't raise the panel when you touch the screen edg
 
 ## Requirements
 
-- KDE Plasma on **Wayland**.
+- KDE Plasma **6** on **Wayland**.
 - LayerShellQt's `org.kde.layershell` QML module, `org.kde.kwindowsystem`,
   and Plasma's shell QML APIs, supplied by your distribution.
 - `kpackagetool6` to install from a terminal.
@@ -45,9 +46,63 @@ Windows Can Cover mode, it doesn't raise the panel when you touch the screen edg
 Tested on Plasma **6.8.2** with Fedora Asahi Remix 45 development on ARM64.
 Other configurations are unverified. See [compatibility](docs/COMPATIBILITY.md).
 
+## Set up your distribution
+
+Start with an existing Plasma 6 desktop and select **Plasma (Wayland)** at login.
+Install the runtime QML modules and terminal installation tool using the commands
+for your distribution below. Plasma's shell QML APIs come with the desktop;
+no development packages or compiler are needed.
+
+These commands cover package installation, not additional tested configurations.
+Package availability depends on your distribution release: Plasma 5 releases
+(such as Ubuntu/Kubuntu 24.04) are not supported.
+
+### Debian / Ubuntu / Kubuntu (Plasma 6 releases)
+
+```sh
+sudo apt update
+sudo apt install qml6-module-org-kde-layershell qml6-module-org-kde-kwindowsystem kpackagetool6
+```
+
+The separate `qml6-module-org-kde-layershell` package is required even if the
+LayerShellQt library is already installed. It supplies the `org.kde.layershell`
+import reported missing in [issue #1](https://github.com/matthetherington/plasma-panel-in-background/issues/1).
+
+### Fedora KDE / Fedora Asahi Remix
+
+```sh
+sudo dnf install layer-shell-qt kf6-kwindowsystem kf6-kpackage
+```
+
+### Arch Linux / EndeavourOS
+
+```sh
+sudo pacman -Syu --needed layer-shell-qt kwindowsystem kpackage
+```
+
+This performs a full system upgrade as well as installing the packages, avoiding
+an unsupported partial upgrade on Arch-based systems.
+
+### openSUSE Tumbleweed / Leap (Plasma 6 releases)
+
+```sh
+sudo zypper refresh
+sudo zypper install layer-shell-qt6-imports kf6-kwindowsystem-imports kf6-kpackage
+```
+
+### After installing dependencies
+
+Log out and back into **Plasma (Wayland)**, then install the widget below.
+If an existing widget shows `module "org.kde.layershell" is not installed`, run
+your distribution's setup commands and log out and back in before trying again.
+If a package cannot be found, check that your release provides Plasma 6 and the
+Qt 6 QML modules above; Qt 5 equivalents will not work.
+
 ## Install
 
-Install a downloaded `.plasmoid` file, adjusting the path as needed:
+Download the `.plasmoid` file from the
+[latest release](https://github.com/matthetherington/plasma-panel-in-background/releases/latest),
+then install it, adjusting the path and version as needed:
 
 ```sh
 kpackagetool6 --type Plasma/Applet --install ./plasma-panel-in-background-0.3.0.plasmoid
@@ -82,21 +137,6 @@ kpackagetool6 --type Plasma/Applet --upgrade ./plasma-panel-in-background-0.3.0.
 ```
 
 Use the new version's filename, then log out and back in to load the updated widget.
-
-### Migrating from 0.2.0 or earlier
-
-The rename changes the package ID from `org.kde.zzero` to
-`io.github.matthetherington.plasma.panelinbackground`. Plasma treats these as
-different widgets, so `--upgrade` cannot migrate the old one.
-
-1. In Edit Mode, disable and remove the old controller from each panel. Keep the
-   panels and their other widgets.
-2. Remove the old package: `kpackagetool6 --type Plasma/Applet --remove org.kde.zzero`.
-3. Install the new archive with `--install`, add **Panel in Background** to those
-   panels, and enable it again.
-
-Don't enable both versions on the same panel. Your existing installation is
-unchanged until you choose to migrate.
 
 ## Disable or uninstall
 

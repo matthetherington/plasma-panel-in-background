@@ -37,6 +37,8 @@ class PackagingTests(unittest.TestCase):
             self.assertEqual(metadata["KPackageStructure"], "Plasma/Applet")
             self.assertEqual(metadata["KPlugin"]["Id"], "io.github.matthetherington.plasma.panelinbackground")
             self.assertEqual(metadata["KPlugin"]["Name"], "Panel in Background")
+            self.assertEqual(metadata["KPlugin"]["Icon"],
+                             "preferences-system-windows-effect-coverswitch")
             self.assertEqual(self.archive.name,
                              f'plasma-panel-in-background-{metadata["KPlugin"]["Version"]}.plasmoid')
             self.assertEqual(metadata["KPlugin"]["License"], "MIT")
