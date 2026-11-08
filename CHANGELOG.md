@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0
+
+- Use the window cover-switch icon suggested in issue #1.
+- Add distribution-specific setup commands for Debian/Ubuntu/Kubuntu,
+  Fedora/Asahi, Arch/EndeavourOS and openSUSE.
+- Explain how to resolve a missing `org.kde.layershell` QML module.
+- Remove migration guidance for unpublished development versions.
+
 ## 0.3.0
 
 - First public release of **Panel in Background**.

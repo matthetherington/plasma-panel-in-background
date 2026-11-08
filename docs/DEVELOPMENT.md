@@ -21,7 +21,7 @@ the same source and Python/zlib toolchain.
 Verify the checksum from `dist/`:
 
 ```sh
-sha256sum --check plasma-panel-in-background-0.3.0.plasmoid.sha256
+sha256sum --check plasma-panel-in-background-0.4.0.plasmoid.sha256
 ```
 
 ## Packaging tests
@@ -47,7 +47,7 @@ python3 tests/run-nested.py --input
 To test the built archive instead of the source widget:
 
 ```sh
-python3 tests/run-nested.py --input --package dist/plasma-panel-in-background-0.3.0.plasmoid
+python3 tests/run-nested.py --input --package dist/plasma-panel-in-background-0.4.0.plasmoid
 ```
 
 Tests start a separate Plasma session with a private D-Bus bus and disposable XDG
