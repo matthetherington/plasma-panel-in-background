@@ -90,6 +90,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/plasma-logs"
           chmod 1777 "$RUNNER_TEMP/plasma-logs"
           docker run --rm --network none --cap-drop ALL \
+            --user "$(id -u):$(id -g)" --env HOME=/tmp \
             --device /dev/udmabuf \
             --volume "$GITHUB_WORKSPACE:/workspace:ro" \
             --volume "$RUNNER_TEMP/plasma-logs:/tmp/opencode" \
