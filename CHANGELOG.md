@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.2
+
+- Update project metadata.
+- Add CI/CD with GitHub Actions to test, build and release
+
 ## 0.4.1
 
 - Show an animated demonstration in the README and refresh the static screenshot.

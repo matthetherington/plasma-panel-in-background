@@ -32,7 +32,7 @@ the same source and Python/zlib toolchain.
 Verify the checksum from `dist/`:
 
 ```sh
-sha256sum --check plasma-panel-in-background-0.4.1.plasmoid.sha256
+sha256sum --check plasma-panel-in-background-0.4.3.plasmoid.sha256
 ```
 
 ## Packaging tests
@@ -58,7 +58,7 @@ python3 tests/run-nested.py --input
 To test the built archive instead of the source widget:
 
 ```sh
-python3 tests/run-nested.py --input --package dist/plasma-panel-in-background-0.4.1.plasmoid
+python3 tests/run-nested.py --input --package dist/plasma-panel-in-background-0.4.2.plasmoid
 ```
 
 Tests start a separate Plasma session with a private D-Bus bus and disposable XDG
@@ -120,11 +120,11 @@ configurations and remaining gaps in [COMPATIBILITY.md](COMPATIBILITY.md).
 1. Update `package/metadata.json`, add a matching `## <version>` section to
    `CHANGELOG.md`, and update versioned examples in this file and `README.md`.
 2. Commit the changes and push `main`. Check that CI passes.
-3. Create and push the matching annotated tag, for example for a future `0.4.2`:
+3. Create and push the matching annotated tag, for example for a future `0.4.3`:
 
    ```sh
-   git tag -a v0.4.2 -m "Release 0.4.2"
-   git push origin v0.4.2
+   git tag -a v0.4.3 -m "Release 0.4.3"
+   git push origin v0.4.3
    ```
 
 4. Wait for the tag's workflow to pass and publish the GitHub Release. Download

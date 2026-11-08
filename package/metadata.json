@@ -4,7 +4,7 @@
         "Name": "Panel in Background",
         "Description": "Keep this panel behind application windows on Plasma Wayland",
         "Icon": "preferences-system-windows-effect-coverswitch",
-        "Version": "0.4.1",
+        "Version": "0.4.2",
         "License": "MIT",
         "Authors": [{"Name": "Matt Hetherington"}],
         "Category": "Utilities"

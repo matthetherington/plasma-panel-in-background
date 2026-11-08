@@ -105,7 +105,7 @@ Download the `.plasmoid` file from the
 then install it, adjusting the path and version as needed:
 
 ```sh
-kpackagetool6 --type Plasma/Applet --install ./plasma-panel-in-background-0.4.1.plasmoid
+kpackagetool6 --type Plasma/Applet --install ./plasma-panel-in-background-0.4.2.plasmoid
 ```
 
 Run this as your desktop user, without `sudo`. To build from source, see
@@ -136,7 +136,7 @@ existing panel layout.
 ## Upgrade
 
 ```sh
-kpackagetool6 --type Plasma/Applet --upgrade ./plasma-panel-in-background-0.4.1.plasmoid
+kpackagetool6 --type Plasma/Applet --upgrade ./plasma-panel-in-background-0.4.2.plasmoid
 ```
 
 Use the new version's filename, then log out and back in to load the updated widget.
