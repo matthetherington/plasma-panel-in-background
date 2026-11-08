@@ -69,7 +69,21 @@ jobs:
         run: docker build --tag panel-in-background-ci --file tests/ci.Dockerfile tests
       - name: Enable software-rendering buffers on the disposable runner
         run: |
-          sudo modprobe udmabuf
+          # Hosted Azure images can omit the running kernel's extra modules.
+          # Installing them in the Fedora container cannot fix the host kernel.
+          if [[ ! -c /dev/udmabuf ]]; then
+            if ! modinfo udmabuf >/dev/null 2>&1; then
+              sudo apt-get update
+              sudo apt-get install --yes --no-install-recommends "linux-modules-extra-$(uname -r)"
+              sudo depmod -a
+            fi
+            sudo modprobe udmabuf
+            sudo udevadm settle
+          fi
+          if [[ ! -c /dev/udmabuf ]]; then
+            echo "::error::The runner kernel $(uname -r) does not provide /dev/udmabuf; Plasma integration tests cannot run."
+            exit 1
+          fi
           sudo chmod a+rw /dev/udmabuf
       - name: Test the packaged widget without a host desktop
         run: |

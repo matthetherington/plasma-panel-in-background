@@ -89,7 +89,9 @@ version-tag pushes (`v*`), and manual runs from the Actions tab.
 2. Download that same artifact and run the full isolated Plasma lifecycle/input
    suite in a Fedora 44 container on an x86_64 GitHub-hosted runner. It uses
    software rendering, a virtual display, a private D-Bus session and disposable
-   configuration. The job loads the runner's `udmabuf` kernel module and exposes
+   configuration. If the hosted Azure image omits `udmabuf`, the job first installs
+   `linux-modules-extra-$(uname -r)` on the host (matching the **running** kernel,
+   not a newer kernel metapackage). It loads the `udmabuf` kernel module and exposes
    only `/dev/udmabuf` to the unprivileged container for software-rendering buffers;
    recent KWin versions require this even without a physical GPU. No host desktop
    or GPU is needed. Diagnostics are saved as
@@ -114,6 +116,11 @@ The container pins the Fedora release, not individual package versions, so its
 Plasma/Qt packages track that release's updates. Passing this job is not a promise
 of compatibility with every distro or Plasma version. Keep manually verified
 configurations and remaining gaps in [COMPATIBILITY.md](COMPATIBILITY.md).
+
+If the runner's matching extra-modules package is unavailable or its kernel was
+built without `CONFIG_UDMABUF`, the Plasma job fails and blocks publication rather
+than skipping integration tests. This dependency is on the host kernel; installing
+packages inside the Fedora container will not resolve it.
 
 ### Publish a new version
 
